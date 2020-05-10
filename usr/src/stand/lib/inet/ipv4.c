@@ -24,6 +24,9 @@
  *
  * ipv4.c, Code implementing the IPv4 internet protocol.
  */
+/*
+ * Copyright 2017 Hayashi Naoyuki
+ */
 
 #pragma ident	"%Z%%M%	%I%	%E% SMI"
 
@@ -1140,7 +1143,7 @@ again:
 		else
 			base = 8;
 	}
-	while ((c = *cp) != NULL) {
+	while ((c = *cp) != '0') {
 		if (isdigit(c)) {
 			if ((c - '0') >= base)
 			    break;

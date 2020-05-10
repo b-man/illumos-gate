@@ -5989,8 +5989,9 @@ tcp_xmit_mp(tcp_t *tcp, mblk_t *mp, int32_t max_to_send, int32_t *offset,
 					tcp->tcp_state = TCPS_LAST_ACK;
 					break;
 				}
-				if (tcp->tcp_suna == tcp->tcp_snxt)
+				if (tcp->tcp_suna == tcp->tcp_snxt) {
 					TCP_TIMER_RESTART(tcp, tcp->tcp_rto);
+				}
 				tcp->tcp_snxt = tcp->tcp_fss + 1;
 			}
 		}
