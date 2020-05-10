@@ -23,6 +23,9 @@
  * Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
  * Copyright 2019 Joyent, Inc.
  */
+/*
+ * Copyright 2017 Hayashi Naoyuki
+ */
 
 /*
  * Functions in this file are shared between the disk and ses enumerators.
@@ -67,7 +70,7 @@ typedef struct disk_cbdata {
  */
 #if defined(__i386) || defined(__amd64)
 #define	PHYS_EXTN	":q,raw"
-#elif defined(__sparc) || defined(__sparcv9)
+#elif defined(__sparc) || defined(__sparcv9) || defined(__aarch64)
 #define	PHYS_EXTN	":c,raw"
 #else
 #error	Unknown architecture
