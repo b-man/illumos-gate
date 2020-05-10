@@ -26,6 +26,9 @@
  * Copyright 2016 Nexenta Systems, Inc.  All rights reserved.
  * Copyright 2019 Joyent, Inc.
  */
+/*
+ * Copyright 2017 Hayashi Naoyuki
+ */
 
 #ifndef	_SYS_SUNDDI_H
 #define	_SYS_SUNDDI_H
@@ -46,7 +49,7 @@
 #include <sys/ddi_isa.h>
 #include <sys/model.h>
 #include <sys/devctl.h>
-#if defined(__i386) || defined(__amd64)
+#if defined(__i386) || defined(__amd64) || defined(__aarch64)
 #include <sys/dma_engine.h>
 #endif
 #include <sys/sunpm.h>
@@ -2036,7 +2039,7 @@ pci_ereport_teardown(dev_info_t *dip);
 void
 pci_ereport_post(dev_info_t *dip, ddi_fm_error_t *derr, uint16_t *status);
 
-#if defined(__i386) || defined(__amd64)
+#if defined(__i386) || defined(__amd64) || defined(__aarch64)
 int
 pci_peekpoke_check(dev_info_t *, dev_info_t *, ddi_ctl_enum_t, void *, void *,
     int (*handler)(dev_info_t *, dev_info_t *, ddi_ctl_enum_t, void *, void *),

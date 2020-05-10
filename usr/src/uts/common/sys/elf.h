@@ -23,6 +23,9 @@
  * Copyright (c) 2018, Joyent, Inc.
  */
 /*
+ * Copyright 2017 Hayashi Naoyuki
+ */
+/*
  * Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
  * Use is subject to license terms.
  */
@@ -999,6 +1002,10 @@ int	elfheadcheck(unsigned char, Elf32_Half, Elf32_Word);
 
 #if defined(ELF_TARGET_ALL) || defined(ELF_TARGET_AMD64)
 #include <sys/elf_amd64.h>
+#endif
+
+#if defined(ELF_TARGET_ALL) || defined(ELF_TARGET_AARCH64)
+#include <sys/elf_aarch64.h>
 #endif
 
 #endif	/* _SYS_ELF_H */
