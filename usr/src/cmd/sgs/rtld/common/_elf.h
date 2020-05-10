@@ -25,6 +25,9 @@
  *
  * Copyright (c) 1991, 2010, Oracle and/or its affiliates. All rights reserved.
  */
+/*
+ * Copyright 2017 Hayashi Naoyuki
+ */
 #ifndef	__ELF_DOT_H
 #define	__ELF_DOT_H
 
@@ -67,11 +70,11 @@ extern	void	elf_plt_init(void *, caddr_t);
 extern	void	elf_plt2_init(uint_t *, Rt_map *);
 #endif
 extern	int	elf_reloc(Rt_map *, uint_t, int *, APlist **);
-extern	void	elf_reloc_bad(Rt_map *, void *, uchar_t, ulong_t,
+extern	void	elf_reloc_bad(Rt_map *, void *, uint_t, ulong_t,
 		    ulong_t);
 extern	int	elf_reloc_error(Rt_map *, const char *, void *, uint_t);
 extern	int	elf_rtld_load();
-extern	long	elf_static_tls(Rt_map *, Sym *, void *, uchar_t, char *,
+extern	long	elf_static_tls(Rt_map *, Sym *, void *, uint_t, char *,
 		    ulong_t, long);
 extern	Fct	*elf_verify(caddr_t, size_t, Fdesc *, const char *, Rej_desc *);
 extern	int	elf_verify_vers(const char *, Rt_map *, Rt_map *);
@@ -95,7 +98,11 @@ typedef struct pltpadinfo {
 typedef struct _rt_elf_private {
 	void		*e_symtab;	/* symbol table */
 	void		*e_sunwsymtab;	/* symtab augmented with local fcns */
+#ifdef __alpha
+	uint64_t	*e_hash;
+#else
 	uint_t		*e_hash;	/* hash table */
+#endif
 	char		*e_strtab;	/* string table */
 	void		*e_reloc;	/* relocation table */
 	uint_t		*e_pltgot;	/* addrs for procedure linkage table */

@@ -21,6 +21,9 @@
 /*
  * Copyright (c) 1991, 2010, Oracle and/or its affiliates. All rights reserved.
  */
+/*
+ * Copyright 2017 Hayashi Naoyuki
+ */
 
 /*
  * This file contains functions to implement the partition menu commands.
@@ -138,7 +141,7 @@ p_ipart(void)
 	return (0);
 }
 
-#if defined(i386)
+#if defined(i386) || defined(__amd64) || defined(__aarch64)
 /*
  * This routine implements the 'j' command.  It changes the 'j' partition.
  */
@@ -169,9 +172,16 @@ p_expand(void)
 	nparts = efi_label->efi_nparts;
 
 	enter_critical();
-	efi_label->efi_parts[nparts - 1].p_start += delta;
 	efi_label->efi_last_u_lba += delta;
 	efi_label->efi_altern_lba = cur_parts->etoc->efi_last_lba;
+	if (efi_label->efi_parts[nparts - 1].p_tag == V_RESERVED) {
+		efi_label->efi_parts[nparts - 1].p_start += delta;
+	} else if (efi_label->efi_parts[nparts - 1].p_tag == V_UNASSIGNED) {
+		efi_label->efi_parts[nparts - 1].p_tag = V_RESERVED;
+		efi_label->efi_parts[nparts - 1].p_start =
+		    efi_label->efi_last_u_lba - EFI_MIN_RESV_SIZE + 1;
+		efi_label->efi_parts[nparts - 1].p_size = EFI_MIN_RESV_SIZE;
+	}
 	exit_critical();
 
 	fmt_print("The expanded capacity is added to the unallocated space.\n");
@@ -189,7 +199,7 @@ p_select(void)
 	u_ioparam_t		ioparam;
 	int			i, index, deflt, *defltptr = NULL;
 	blkaddr_t		b_cylno;
-#if defined(i386)
+#if defined(i386) || defined(__amd64) || defined(__aarch64)
 	blkaddr_t		cyl_offset;
 #endif
 
@@ -234,7 +244,7 @@ p_select(void)
 		fmt_print("\n");
 		return (0);
 	}
-#if defined(i386)
+#if defined(i386) || defined(__amd64) || defined(__aarch64)
 	/*
 	 * Adjust for the boot and alternate sectors partition - assuming that
 	 * the alternate sectors partition physical location follows
@@ -258,7 +268,7 @@ p_select(void)
 	 */
 	for (i = 0; i < NDKMAP; i++)  {
 
-#if defined(i386)
+#if defined(i386) || defined(__amd64) || defined(__aarch64)
 		if (i == I_PARTITION || i == J_PARTITION || i == C_PARTITION) {
 			b_cylno = 0;
 		} else if (pptr->pinfo_map[i].dkl_nblk == 0) {
