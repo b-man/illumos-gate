@@ -145,7 +145,7 @@ function maxjobs
 	# excessive paging/swapping in cases of virtual machine installations
 	# which have lots of CPUs but not enough memory assigned to handle
 	# that many parallel jobs
-	if [[ \$(/usr/sbin/prtconf 2>'/dev/null') == ~(E)Memory\ size:\ ([[:digit:]]+)\ Megabytes ]] ; then
+	if [[ \$(/usr/sbin/prtconf 2>'/dev/null') == ~(E)Memory\\ size:\\ ([[:digit:]]+)\\ Megabytes ]] ; then
 		integer max_jobs_per_memory # parallel jobs which fit into physical memory
 		integer physical_memory # physical memory installed
 
@@ -289,10 +289,6 @@ if [ "$mach" = "aarch64" ]; then
 
 # Target Aarch64 platform.
 AARCH64_PLATFORM=$AARCH64_PLATFORM; export AARCH64_PLATFORM
-
-# Comment out below line if you want to use GNU binutils linker
-# to build Illumos (Illumos LD is not currently supported).
-#__GNU_LD=#;            export __GNU_LD
 EOF
 	fi
 }
